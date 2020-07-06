@@ -113,6 +113,7 @@ const filteredArray = prices.filter((p) => p > 6);
 
 console.log(filteredArray);
 
+// ------------------------------------------------------------
 // let sum = 0;
 
 // prices.forEach((price) => {
@@ -121,6 +122,9 @@ console.log(filteredArray);
 
 // console.log(sum);
 
+// Note: reduce also takes a 3rd and 4th argument for currentIndex and originalArray:
+// Note: 0 here means start from 0 and run reduce:
 const sum = prices.reduce((prevValue, curValue) => prevValue + curValue, 0);
 
 console.log(sum);
+// ------------------------------------------------------------
