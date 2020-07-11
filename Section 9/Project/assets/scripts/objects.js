@@ -1,39 +1,51 @@
-const movieList = document.getElementById('movie-list');
+const addMovieBtn = document.getElementById('add-movie-btn');
+const searchBtn = document.getElementById('search-btn');
 
-movieList.style['background-color'] = 'red';
-movieList.style.display = 'block';
+const movies = [];
 
-const userChosenKeyName = 'level';
+const renderMovies = () => {
+  const movieList = document.getElementById('movie-list');
 
-// NOTE: anything we can use as a variable can be used as a key-name (but not the other way around, i.e. key names are more flexible!):
-let person = {
-  'first name': 'Max',
-  // NOTE: age (key) is coerced into a string by JS:
-  age: 30,
-  hobbies: ['Sports', 'Cooking'],
-  // NOTE: we can dynamically set or access properties inside an Object:
-  [userChosenKeyName]: '...',
-  greet: function () {
-    alert('Hi there!');
-  },
-  1.5: 'hello',
+  if (movies.length === 0) {
+    movieList.classList.remove('visible');
+    return;
+  } else {
+    movieList.classList.add('visible');
+  }
+
+  movieList.innerHTML = '';
+
+  movies.forEach((movie) => {
+    const movieEl = document.createElement('li');
+    movieEl.textContent = movie.info.title;
+    movieList.append(movieEl);
+  });
 };
 
-// person.greet();
+const addMovieHandler = () => {
+  const title = document.getElementById('title').value;
+  const extraName = document.getElementById('extra-name').value;
+  const extraValue = document.getElementById('extra-value').value;
 
-// person.age = 31;
-delete person.age;
-// NOTE: we should not really assign undefined to a value directly (only JS should), instead use null:
-// person.age = undefined;
-// person.age = null;
-person.isAdmin = true;
+  if (
+    title.trim() === '' ||
+    extraName.trim() === '' ||
+    extraValue.trim() === ''
+  ) {
+    return;
+  }
 
-console.log(person['first name']);
+  const newMovie = {
+    info: {
+      title,
+      [extraName]: extraValue,
+    },
+    id: Math.random(),
+  };
 
-// NOTE: Object preserve the order of key-value pairs, with one exception (i.e. when keys are numbers).
-// This makes sense, think of Arrays, which are Objects with number keys where the order is guaranteed (ascending)
-const numbers = { 5: 'hi', 1: 'true' };
-console.log(numbers);
+  movies.push(newMovie);
+  console.log('addMovieHandler -> movies', movies);
+  renderMovies();
+};
 
-const keyName = 'first name';
-console.log(person[keyName]);
+addMovieBtn.addEventListener('click', addMovieHandler);
