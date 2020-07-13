@@ -41,3 +41,12 @@ console.log(numbers);
 
 const keyName = 'first name';
 console.log(person[keyName]);
+
+// NOTE: one way to creat a copy of an Object is to use the spread operator. But note that any nested objects/arrays inside
+// this will have to be manually (e.g. via another spread operator) copied over as JS does not do a deep copy!
+
+// NOTE: another way to create a copy of an Object is to use Object.assign() - {} is the Object we are copying TO and second arg
+// is the original Object we are copying FROM:
+const personObject = { name: 'Armin' };
+const personObject2 = Object.assign({}, personObject);
+console.log(personObject2);
