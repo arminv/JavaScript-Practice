@@ -21,6 +21,9 @@ const renderMovies = (filter = '') => {
 
   filteredMovies.forEach((movie) => {
     const movieEl = document.createElement('li');
+    // We can check for existence of properties in an Object:
+    // if ('info' in movie) {
+    // if (movie.info === undefined) {}
     const { info, ...otherProps } = movie;
     console.log('otherProps:', otherProps);
     const { title: movieTitle } = info;
