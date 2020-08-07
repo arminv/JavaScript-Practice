@@ -58,7 +58,8 @@ const addMovieHandler = () => {
       [extraName]: extraValue,
     },
     id: Math.random().toString(),
-    getFormattedTitle: function () {
+    // getFormattedTitle: function () {
+    getFormattedTitle() {
       // NOTE: 'this' referes to whatever was responsible for calling the function:
       return this.info.title.toUpperCase();
     },
