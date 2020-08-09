@@ -27,8 +27,10 @@ const renderMovies = (filter = '') => {
     const { info, ...otherProps } = movie;
     console.log('otherProps:', otherProps);
     // const { title: movieTitle } = info;
-    // const { getFormattedTitle } = movie;
-    let text = movie.getFormattedTitle() + ' - ';
+    let { getFormattedTitle } = movie;
+    // NOTE: we want 'this' to refer to the movie object, so we have to use bind():
+    getFormattedTitle = getFormattedTitle.bind(movie);
+    let text = getFormattedTitle() + ' - ';
     for (const key in info) {
       if (key !== 'title') {
         text = text + `${key}: ${info[key]}`;
