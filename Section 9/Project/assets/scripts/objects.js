@@ -29,8 +29,13 @@ const renderMovies = (filter = '') => {
     // const { title: movieTitle } = info;
     let { getFormattedTitle } = movie;
     // NOTE: we want 'this' to refer to the movie object, so we have to use bind():
-    getFormattedTitle = getFormattedTitle.bind(movie);
-    let text = getFormattedTitle() + ' - ';
+    // getFormattedTitle = getFormattedTitle.bind(movie);
+    // NOTE: alternatively, we can use call() instead of bind()
+    // NOTE: bind prepares for futute execution(hence we save it in a variable), but call executes right away:
+    let text = getFormattedTitle.call(movie) + ' - ';
+    // NOTE: we can also use apply() instead of call(), the difference is that the second arg passed to it
+    // will have to be an array(whereas with call we can pass an infinite number of args and they do NOT have to be inside and array):
+    // let text = getFormattedTitle.apply(movie, []) + ' - ';
     for (const key in info) {
       if (key !== 'title') {
         text = text + `${key}: ${info[key]}`;
