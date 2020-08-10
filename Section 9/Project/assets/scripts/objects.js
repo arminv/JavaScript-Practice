@@ -77,7 +77,9 @@ const addMovieHandler = () => {
   renderMovies();
 };
 
-const searchMovieHandler = () => {
+const searchMovieHandler = function () {
+  // NOTE: for events, the browser binds 'this' to the DOM element that triggered the event:
+  console.log(this);
   const filterTerm = document.getElementById('filter-title').value;
   renderMovies(filterTerm);
 };
