@@ -77,6 +77,7 @@ const addMovieHandler = () => {
   renderMovies();
 };
 
+// NOTE: arrow functions do not bind 'this' to anything:
 const searchMovieHandler = function () {
   // NOTE: for events, the browser binds 'this' to the DOM element that triggered the event:
   console.log(this);
