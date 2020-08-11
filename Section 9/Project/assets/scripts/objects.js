@@ -37,7 +37,7 @@ const renderMovies = (filter = '') => {
     // will have to be an array(whereas with call we can pass an infinite number of args and they do NOT have to be inside and array):
     // let text = getFormattedTitle.apply(movie, []) + ' - ';
     for (const key in info) {
-      if (key !== 'title') {
+      if (key !== 'title' && key !== '_title') {
         text = text + `${key}: ${info[key]}`;
       }
     }
@@ -51,17 +51,23 @@ const addMovieHandler = () => {
   const extraName = document.getElementById('extra-name').value;
   const extraValue = document.getElementById('extra-value').value;
 
-  if (
-    title.trim() === '' ||
-    extraName.trim() === '' ||
-    extraValue.trim() === ''
-  ) {
+  if (extraName.trim() === '' || extraValue.trim() === '') {
     return;
   }
 
   const newMovie = {
     info: {
-      title,
+      // NOTE: set & get (special keywords) allow us do define setters and getters - they help with validation, callback, transformation, etc.:
+      set title(val) {
+        if (val.trim() === '') {
+          this._title = 'DEFAULT';
+          return;
+        }
+        this._title = val;
+      },
+      get title() {
+        return this._title;
+      },
       [extraName]: extraValue,
     },
     id: Math.random().toString(),
@@ -71,6 +77,9 @@ const addMovieHandler = () => {
       return this.info.title.toUpperCase();
     },
   };
+
+  newMovie.info.title = title;
+  console.log('newMovie.info.title', newMovie.info.title);
 
   movies.push(newMovie);
   console.log('addMovieHandler -> movies', movies);
