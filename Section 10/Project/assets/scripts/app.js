@@ -1,10 +1,14 @@
 class Product {
+  // NOTE: these will be added exactly the same to every object created by this class:
+  // NOTE: these are 'fields' (fields define properties):
   // title = 'DEFAULT';
   // imageUrl;
   // description;
   // price;
 
+  // NOTE: by using constructor we can dynamically set properties (i.e. by passing them as args):
   constructor(title, image, desc, price) {
+    // NOTE: these are 'properties':
     this.title = title;
     this.imageUrl = image;
     this.description = desc;
