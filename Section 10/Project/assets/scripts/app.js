@@ -21,7 +21,7 @@ class shoppingCart {
 
   addProduct(product) {
     this.items.push(product);
-    this.totalOutput = `<h2>Total: \$${1}</h2>`;
+    this.totalOutput.innerHTML = `<h2>Total: \$${1}</h2>`;
   }
 
   render() {
@@ -41,9 +41,7 @@ class ProductItem {
   }
 
   addToCart() {
-    console.log('Adding product to cart...');
-    console.log(this.product);
-    shoppingCart.addProduct();
+    App.addProductToCart(this.product);
   }
 
   render() {
@@ -100,8 +98,9 @@ class ProductList {
 class Shop {
   render() {
     const renderHook = document.getElementById('app');
-    const cart = new shoppingCart();
-    const cartEl = cart.render();
+
+    this.cart = new shoppingCart();
+    const cartEl = this.cart.render();
     const productList = new ProductList();
     const prodListEl = productList.render();
 
@@ -110,5 +109,18 @@ class Shop {
   }
 }
 
-const shop = new Shop();
-shop.render();
+class App {
+  static cart;
+  // NOTE: static methods act on the class itself and do NOT require to be called on a class instance - they are good proxies for sharing data between different classes:
+  static init() {
+    const shop = new Shop();
+    shop.render();
+    this.cart = shop.cart;
+  }
+
+  static addProductToCart(product) {
+    this.cart.addProduct(product);
+  }
+}
+
+App.init();
