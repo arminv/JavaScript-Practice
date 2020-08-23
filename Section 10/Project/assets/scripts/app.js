@@ -16,7 +16,36 @@ class Product {
   }
 }
 
-class shoppingCart {
+class ElementAttribute {
+  constructor(attrName, attrValue) {
+    this.name = attrName;
+    this.value = attrValue;
+  }
+}
+
+class Component {
+  constructor(renderHookId) {
+    this.hookId = renderHookId;
+  }
+
+  createRootElement(tag, cssClasses, attributes) {
+    const rootElement = document.createElement(tag);
+    if (cssClasses) {
+      rootElement.className = cssClasses;
+    }
+    if (attributes && attributes.length > 0) {
+      for (const attr of attributes) {
+        rootElement.setAttribute(attr.name, attr.value);
+      }
+    }
+    document.getElementById(this.hookId).append(rootElement);
+    return rootElement;
+  }
+}
+
+// NOTE: in JS we can only inherit from one class:
+// NOTE: if subclass has no constructor, the parent constructor gets called.
+class shoppingCart extends Component {
   items = [];
 
   // NOTE: we can have setters and getters in classes:
@@ -35,6 +64,11 @@ class shoppingCart {
     return sum;
   }
 
+  constructor(renderHookId) {
+    // NOTE: here we call te parent constructor:
+    super(renderHookId);
+  }
+
   addProduct(product) {
     const updatedItems = [...this.items];
     updatedItems.push(product);
@@ -42,14 +76,12 @@ class shoppingCart {
   }
 
   render() {
-    const cartEl = document.createElement('section');
+    const cartEl = this.createRootElement('section', 'cart');
     cartEl.innerHTML = `
     <h2>Total: \$${0}</h2>
     <button>Order Now!</button>
     `;
-    cartEl.className = 'cart';
     this.totalOutput = cartEl.querySelector('h2');
-    return cartEl;
   }
 }
 class ProductItem {
@@ -116,12 +148,11 @@ class Shop {
   render() {
     const renderHook = document.getElementById('app');
 
-    this.cart = new shoppingCart();
-    const cartEl = this.cart.render();
+    this.cart = new shoppingCart('app');
+    this.cart.render();
     const productList = new ProductList();
     const prodListEl = productList.render();
 
-    renderHook.append(cartEl);
     renderHook.append(prodListEl);
   }
 }
