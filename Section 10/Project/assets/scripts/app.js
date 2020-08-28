@@ -84,7 +84,7 @@ class shoppingCart extends Component {
     this.totalOutput = cartEl.querySelector('h2');
   }
 }
-class ProductItem {
+class ProductItem extends Component {
   constructor(product) {
     this.product = product;
   }
@@ -94,8 +94,7 @@ class ProductItem {
   }
 
   render() {
-    const prodEl = document.createElement('li');
-    prodEl.className = 'product-item';
+    const prodEl = this.createRootElement('li', 'product-item');
     prodEl.innerHTML = `
         <div>
           <img src="${this.product.imageUrl}" alt="${this.product.title}" >
@@ -110,7 +109,6 @@ class ProductItem {
     const addCartButton = prodEl.querySelector('button');
     // NOTE: bind() on this:
     addCartButton.addEventListener('click', this.addToCart.bind(this));
-    return prodEl;
   }
 }
 
