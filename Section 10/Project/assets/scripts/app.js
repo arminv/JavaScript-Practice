@@ -50,7 +50,7 @@ class Component {
 
 // NOTE: in JS we can only inherit from one class:
 // NOTE: if subclass has no constructor, the parent constructor gets called.
-class shoppingCart extends Component {
+class ShoppingCart extends Component {
   items = [];
 
   // NOTE: we can have setters and getters in classes:
@@ -62,16 +62,21 @@ class shoppingCart extends Component {
   }
 
   get totalAmount() {
-    const sum = this.items.reduce((prevValue, curItem) => {
-      return prevValue + curItem.price;
-    }, 0);
-
+    const sum = this.items.reduce(
+      (prevValue, curItem) => prevValue + curItem.price,
+      0
+    );
     return sum;
   }
 
   constructor(renderHookId) {
     // NOTE: here we call te parent constructor:
-    super(renderHookId);
+    super(renderHookId, false);
+    this.orderProducts = () => {
+      console.log('Ordering...');
+      console.log(this.items);
+    };
+    this.render();
   }
 
   addProduct(product) {
@@ -83,12 +88,16 @@ class shoppingCart extends Component {
   render() {
     const cartEl = this.createRootElement('section', 'cart');
     cartEl.innerHTML = `
-    <h2>Total: \$${0}</h2>
-    <button>Order Now!</button>
+      <h2>Total: \$${0}</h2>
+      <button>Order Now!</button>
     `;
+    const orderButton = cartEl.querySelector('button');
+    // orderButton.addEventListener('click', () => this.orderProducts());
+    orderButton.addEventListener('click', this.orderProducts);
     this.totalOutput = cartEl.querySelector('h2');
   }
 }
+
 class ProductItem extends Component {
   constructor(product, renderHookId) {
     super(renderHookId, false);
@@ -152,7 +161,7 @@ class ProductList extends Component {
   }
 
   render() {
-    this.createRootElement('li', 'product-list', [
+    this.createRootElement('ul', 'product-list', [
       new ElementAttribute('id', 'prod-list'),
     ]);
     if (this.products && this.products.length > 0) {
@@ -161,12 +170,13 @@ class ProductList extends Component {
   }
 }
 
-class Shop extends Component {
+class Shop {
   constructor() {
-    super();
+    this.render();
   }
+
   render() {
-    this.cart = new shoppingCart('app');
+    this.cart = new ShoppingCart('app');
     new ProductList('app');
   }
 }
