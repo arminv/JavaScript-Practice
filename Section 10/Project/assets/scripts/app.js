@@ -16,6 +16,17 @@ class Product {
   }
 }
 
+// NOTE: we can use 'instanceof' to see if an instance was created based off on a certain class
+// NOTE: we can use 'Object.getOwnPropertyDescriptors(someObject)' to get the configurations/metadata on an instance (e.g. value, enumerable, writable, etc.)
+// NOTE: we can use 'Object.defineProperty(someObject, somePropertyInObject), {configs})' to change/configure properties of an object
+// Example:
+// Object.defineProperties(person, 'name', {
+//   configurable: true,
+//   enumerable: true,
+//   value: person.name,
+//   writable: false,
+// });
+
 class ElementAttribute {
   constructor(attrName, attrValue) {
     this.name = attrName;
