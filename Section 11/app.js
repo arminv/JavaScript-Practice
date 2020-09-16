@@ -1,7 +1,14 @@
-// class Person {
+// class AgedPerson {
+//   printAge() {
+//     console.log(this.age);
+//   }
+// }
+
+// class Person extends AgedPerson {
 //   name = 'Armin';
 
 //   constructor() {
+//     super();
 //     this.age = 30;
 //   }
 
@@ -20,12 +27,16 @@ function Person() {
 }
 
 // NOTE: 'prototype' is used to assign/set a prototype to an object (i.e. to include something in '__proto__'):
-// NOTE: 'extends' automatically does this behind the scene:
-Person.prototype = {
-  printAge() {
-    // NOTE: the 'this' keyword in prototypes  ALWAYS refers to the object that called it (i.e. the instance that calls the method):
-    console.log(this.age);
-  },
+// NOTE: 'extends' automatically does this behind the scene (i.e. the commented out code above does the same thing):
+// Person.prototype = {
+//   printAge() {
+//     // NOTE: the 'this' keyword in prototypes  ALWAYS refers to the object that called it (i.e. the instance that calls the method):
+//     console.log(this.age);
+//   },
+// };
+// NOTE: a better approach is to just add our custom function to the existing prototype (instead of replacing it all together!):
+Person.prototype.printAge = function () {
+  console.log(this.age);
 };
 
 console.dir(Person);
@@ -40,3 +51,7 @@ p.printAge();
 // NOTE: In console, 'prototype' property only exists for function objects (NOT all objects)!
 console.log(p.__proto__);
 console.log(p.__proto__ === Person.prototype);
+
+// NOTE: the constructor here simply callse the Person function to create a new instance - this is a good approach when we don't have access to the constructor of a class:
+const p2 = new p.__proto__.constructor();
+console.log(p2);
