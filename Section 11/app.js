@@ -26,6 +26,11 @@ function Person() {
   };
 }
 
+// NOTE: very much like static methods in classes, we can add methods/properties to a constructor function - however, these will NOT be added to the instances created by the constructor (only available to constructor itself):
+Person.describe = function () {
+  console.log('Creating persons...');
+};
+
 // NOTE: 'prototype' is used to assign/set a prototype to an object (i.e. to include something in '__proto__'):
 // NOTE: 'extends' automatically does this behind the scene (i.e. the commented out code above does the same thing):
 // Person.prototype = {
@@ -49,9 +54,17 @@ p.printAge();
 // NOTE: prototypes themselves are Objects
 // NOTE: In console, '__proto__' indicates prototypes. This is present for ALL objects in JS (functions, arrays, custom objects, etc.)!
 // NOTE: In console, 'prototype' property only exists for function objects (NOT all objects)!
+console.log(p);
 console.log(p.__proto__);
+console.log(p.toString());
 console.log(p.__proto__ === Person.prototype);
 
 // NOTE: the constructor here simply callse the Person function to create a new instance - this is a good approach when we don't have access to the constructor of a class:
 const p2 = new p.__proto__.constructor();
 console.log(p2);
+
+// NOTE: Object here is the global constructor function that is always available on JS:
+console.log(Object);
+console.dir(Object);
+// NOTE: the global fallback object (for all objects) is Object.prototype, NOT Object itself! By definition this prototype will NOT have a prototype:
+console.dir(Object.prototype);
