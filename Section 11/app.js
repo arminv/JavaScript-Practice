@@ -8,18 +8,35 @@ class Person extends AgedPerson {
   // NOTE: these fields added here are the same as adding them in the constructor() and after the super() call:
   name = 'Armin';
 
+  // NOTE: if we don't want the optimization JS provide and want to create a method everytime one instance is created (as opposed to having the method shared via prototype) we have 2 options:
   constructor() {
     super();
     this.age = 30;
+    // Option 1:
+    // this.greet = function() {...}
   }
+
+  // Option 2: one use case for this would be if this was going to be used with an event listener, so we can use arrow function (otherwise we would have to use bind() in traditional way)
+  // greet = () => {
+  //   console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
+  // };
 
   greet() {
     console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
   }
 }
-
 const p = new Person();
+const p2 = new Person();
 console.log(p);
+// NOTE: JS adds methods to the prototype for optimization purposes (because while properties are unique to each class, methods usually work the same and are independent)
+console.log(p.__proto__ === p2.__proto__);
+const button = document.getElementById('btn');
+// NOTE: this would work fine with Option 2 (above - i.e. arrow functions):
+button.addEventListener('click', p.greet);
+// NOTE: but it would NOT work with the traditional way (i.e. using function keyword) and we would need to use bind() - this method performs slightly better (only if dealing with large number of instances!):
+// button.addEventListener('click', p.greet.bind(p));
+
+// ----------------------------------------------------------------------------------------------------------
 
 // // NOTE: we can use functions instead of the constructor() function - starting with uppercase is only convention:
 // function Person() {
@@ -29,6 +46,10 @@ console.log(p);
 //     console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
 //   };
 // }
+// NOTE: to replicate the optimization in classes (i.e. when methods are added in prototype and shared between all instances) we can do this:
+// Person.prototype.greet = function () {
+//   console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
+// };
 
 // // NOTE: very much like static methods in classes, we can add methods/properties to a constructor function - however, these will NOT be added to the instances created by the constructor (only available to constructor itself):
 // Person.describe = function () {
