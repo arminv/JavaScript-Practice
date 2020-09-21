@@ -38,61 +38,113 @@ button.addEventListener('click', p.greet);
 
 // ----------------------------------------------------------------------------------------------------------
 
-// // NOTE: we can use functions instead of the constructor() function - starting with uppercase is only convention:
-// function Person() {
-//   this.age = 30;
-//   this.name = 'Armin';
-//   this.greet = function () {
-//     console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
-//   };
-// }
+// NOTE: we can use functions instead of the constructor() function - starting with uppercase is only convention:
+function Person() {
+  this.age = 30;
+  this.name = 'Armin';
+  this.greet = function () {
+    console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
+  };
+}
 // NOTE: to replicate the optimization in classes (i.e. when methods are added in prototype and shared between all instances) we can do this:
-// Person.prototype.greet = function () {
-//   console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
+Person.prototype.greet = function () {
+  console.log(`Hi, I am ${this.name} and I am ${this.age} years old!`);
+};
+
+// NOTE: very much like static methods in classes, we can add methods/properties to a constructor function - however, these will NOT be added to the instances created by the constructor (only available to constructor itself):
+Person.describe = function () {
+  console.log('Creating persons...');
+};
+
+// NOTE: 'prototype' is used to assign/set a prototype to an object (i.e. to include something in '__proto__'):
+// NOTE: 'extends' automatically does this behind the scene (i.e. the commented out code above does the same thing):
+// Person.prototype = {
+//   printAge() {
+//     // NOTE: the 'this' keyword in prototypes  ALWAYS refers to the object that called it (i.e. the instance that calls the method):
+//     console.log(this.age);
+//   },
 // };
+// NOTE: a better approach is to just add our custom function to the existing prototype (instead of replacing it all together!):
+Person.prototype.printAge = function () {
+  console.log(this.age);
+};
 
-// // NOTE: very much like static methods in classes, we can add methods/properties to a constructor function - however, these will NOT be added to the instances created by the constructor (only available to constructor itself):
-// Person.describe = function () {
-//   console.log('Creating persons...');
-// };
+console.dir(Person);
 
-// // NOTE: 'prototype' is used to assign/set a prototype to an object (i.e. to include something in '__proto__'):
-// // NOTE: 'extends' automatically does this behind the scene (i.e. the commented out code above does the same thing):
-// // Person.prototype = {
-// //   printAge() {
-// //     // NOTE: the 'this' keyword in prototypes  ALWAYS refers to the object that called it (i.e. the instance that calls the method):
-// //     console.log(this.age);
-// //   },
-// // };
-// // NOTE: a better approach is to just add our custom function to the existing prototype (instead of replacing it all together!):
-// Person.prototype.printAge = function () {
-//   console.log(this.age);
-// };
+// NOTE: the 'new' keyword is important as it still creates an instance of Person - 'new' creates an Object (this={}) and then sets its properties:
+const p = new Person();
+p.greet();
+p.printAge();
+// NOTE: prototypes are just 'fallback objects' - they are just base classes.
+// NOTE: prototypes themselves are Objects
+// NOTE: In console, '__proto__' indicates prototypes. This is present for ALL objects in JS (functions, arrays, custom objects, etc.)!
+// NOTE: In console, 'prototype' property only exists for function objects (NOT all objects)!
+console.log(p);
+console.log(p.__proto__);
+console.log(p.toString());
+console.log(p.__proto__ === Person.prototype);
 
-// console.dir(Person);
+// NOTE: the constructor here simply callse the Person function to create a new instance - this is a good approach when we don't have access to the constructor of a class:
+const p2 = new p.__proto__.constructor();
+console.log(p2);
 
-// // NOTE: the 'new' keyword is important as it still creates an instance of Person - 'new' creates an Object (this={}) and then sets its properties:
-// const p = new Person();
-// p.greet();
-// p.printAge();
-// // NOTE: prototypes are just 'fallback objects' - they are just base classes.
-// // NOTE: prototypes themselves are Objects
-// // NOTE: In console, '__proto__' indicates prototypes. This is present for ALL objects in JS (functions, arrays, custom objects, etc.)!
-// // NOTE: In console, 'prototype' property only exists for function objects (NOT all objects)!
-// console.log(p);
-// console.log(p.__proto__);
-// console.log(p.toString());
-// console.log(p.__proto__ === Person.prototype);
-
-// // NOTE: the constructor here simply callse the Person function to create a new instance - this is a good approach when we don't have access to the constructor of a class:
-// const p2 = new p.__proto__.constructor();
-// console.log(p2);
-
-// // NOTE: Object here is the global constructor function that is always available on JS:
-// console.log(Object);
-// console.dir(Object);
-// // NOTE: the global fallback object (for all objects) is Object.prototype, NOT Object itself! By definition this prototype will NOT have a prototype:
-// console.dir(Object.prototype);
+// NOTE: Object here is the global constructor function that is always available on JS:
+console.log(Object);
+console.dir(Object);
+// NOTE: the global fallback object (for all objects) is Object.prototype, NOT Object itself! By definition this prototype will NOT have a prototype:
+console.dir(Object.prototype);
 
 const p = new Person();
 console.log(p);
+
+// ----------------------------------------------------------------------------------------------------------
+
+// new Object():
+const course = {
+  title: 'JavaScript Practice',
+  rating: 5,
+};
+
+console.log(course.__proto__);
+// NOTE: this is the same as above (i.e. using __proto__);
+console.log(Object.getPrototypeOf(course));
+// NOTE: we can also override the prototype:
+Object.setPrototypeOf(course, {
+  // NOTE: we can extend the current prototype (as opposed to completely overriding it!):
+  ...Object.getPrototypeOf(course),
+  printRating: function () {
+    console.log(`${this.rating}/5`);
+  },
+});
+
+// NOTE: with Object.create() we can create a new object and also set its prototype:
+const student = Object.create(
+  {
+    printProgress: function () {
+      console.log(this.progress);
+    },
+  },
+  // NOTE: we have three options for adding a property to an object:
+  // Option 1:
+  {
+    name: {
+      configurable: true,
+      enumerable: true,
+      value: 'Armin',
+      writable: true,
+    },
+  }
+);
+
+// Option 2:
+student.name = 'Armin';
+// Option 3:
+Object.defineProperty(student, 'progress', {
+  configurable: true,
+  enumerable: true,
+  value: 0.8,
+  writable: false,
+});
+
+console.log(student);
+course.printRating();
