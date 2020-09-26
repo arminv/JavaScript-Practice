@@ -18,7 +18,8 @@ class ProjectItem {
 class ProjectList {
   projects = [];
 
-  constructor(type) {
+  constructor(type, switchHandlerFunction) {
+    this.type = type;
     const prjItems = document.querySelectorAll(`#${type}-projects li`);
     for (const prjItem of prjItems) {
       this.projects.push(new ProjectItem(prjItem.id));
@@ -26,11 +27,16 @@ class ProjectList {
     console.log(this.projects);
   }
 
+  setSwitchHandlerFunction(switchHandlerFunction) {
+    this.switchHandler = switchHandlerFunction;
+  }
+
   addProject() {}
 
   switchProject(projectId) {
     // const projectIndex = this.projects.findIndex((p) => p.id === projectId);
     // this.projects.splice(projectIndex, 1);
+    this.switchHandler(this.projects.find((p) => p.id === projectId));
     // NOTE: this is easier than above:
     this.projects.filter((p) => p.id !== projectId);
   }
