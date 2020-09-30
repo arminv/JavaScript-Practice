@@ -12,12 +12,34 @@ class DOMHelper {
 }
 
 class Tooltip {
-  show() {
-    console.log('The Tooltip!');
+  constructor(closeNotifierFunction) {
+    this.closeNotifier = closeNotifierFunction;
+  }
+
+  closeTooltip = () => {
+    this.detach();
+    this.closeNotifier();
+  };
+
+  detach() {
+    this.element.remove();
+    // NOTE: this line is same as above, but supports older browsers!
+    // this.element.parentElement.removeChild(this.element);
+  }
+
+  attach() {
+    const tooltipElement = document.createElement('div');
+    tooltipElement.className = 'card';
+    tooltipElement.textContent = 'card text!';
+    tooltipElement.addEventListener('click', this.closeTooltip);
+    this.element = tooltipElement;
+    document.body.append(tooltipElement);
   }
 }
 
 class ProjectItem {
+  hasActiveTooltip = false;
+
   constructor(id, updateProjectListsFunction, type) {
     this.id = id;
     this.updateProjectListsHandler = updateProjectListsFunction;
@@ -26,8 +48,14 @@ class ProjectItem {
   }
 
   showMoreInfoHandler() {
-    const tooltip = new Tooltip();
-    tooltip.show();
+    if (this.hasActiveTooltip) {
+      return;
+    }
+    const tooltip = new Tooltip(() => {
+      this.hasActiveTooltip = false;
+    });
+    tooltip.attach();
+    this.hasActiveTooltip = true;
   }
 
   connectMoreInfoButton() {
