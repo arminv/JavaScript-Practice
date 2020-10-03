@@ -155,3 +155,32 @@ class App {
 }
 
 App.init();
+
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: these are some of the methods to get sizes and positions of DOM elements on the page:
+// $0.getBoundingClientRect()
+
+// NOTE: offset gives the outer distance (i.e. from the document/page to the element's outside):
+// $0.offsetTop
+// $0.offsetLeft
+// $0.offsetWidth
+// $0.offsetHeight
+
+// NOTE: client gives the inner distance of the element (without borders/scrollbars, etc.):
+// $0.clientTop
+// $0.clientLeft
+// $0.clientWidth
+// $0.clientHeight
+
+// NOTE: we can get info on scroll:
+// $0.scrollHeight //gives the total height of the scrollable section/element
+// $0.scrollTop //gives the amount of scroll that has happened right now
+
+// NOTE: we can get info about the window - one issue is that having scrollbars adds to the returned values from these:
+// window.innerHeight
+// window.innerWidth
+
+// NOTE: a better way is this (i.e. to deal with scrollbars):
+// document.documentElement.clientWidth
+// document.documentElement.clientHeight
