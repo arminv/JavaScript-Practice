@@ -38,8 +38,8 @@ class Component {
 }
 
 class Tooltip extends Component {
-  constructor(closeNotifierFunction, text) {
-    super();
+  constructor(closeNotifierFunction, text, hostElementId) {
+    super(hostElementId);
     this.closeNotifier = closeNotifierFunction;
     this.text = text;
     this.create();
@@ -54,6 +54,19 @@ class Tooltip extends Component {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
     tooltipElement.textContent = this.text;
+
+    const hostElPosLeft = this.hostElementId.offsetLeft;
+    const hostElPosTop = this.hostElementId.offsetTop;
+    const hostElHeight = this.hostElementId.clientHeight;
+    const parentElementScrolling = this.hostElement.parentElement.scrollTop;
+
+    const x = hostElPosLeft + 20;
+    const y = hostElPosTop + hostElHeight - parentElementScrolling - 10;
+
+    tooltipElement.style.position = 'absolute';
+    tooltipElement.style.left = x + 'px';
+    tooltipElement.style.top = y + 'px';
+
     tooltipElement.addEventListener('click', this.closeTooltip);
     this.element = tooltipElement;
   }
@@ -76,10 +89,14 @@ class ProjectItem {
     const projectElement = document.getElementById(this.id);
     // NOTE: 'dataset' is a special property to get all 'data- ' special HTML attributes on the page; it returns a 'DOMStringMap' object:
     // console.log(projectElement.dataset);
-    tooltipText = projectElement.dataset.extraInfo;
-    const tooltip = new Tooltip(() => {
-      this.hasActiveTooltip = false;
-    }, tooltipText);
+    const tooltipText = projectElement.dataset.extraInfo;
+    const tooltip = new Tooltip(
+      () => {
+        this.hasActiveTooltip = false;
+      },
+      tooltipText,
+      this.id
+    );
     tooltip.attach();
     this.hasActiveTooltip = true;
   }
