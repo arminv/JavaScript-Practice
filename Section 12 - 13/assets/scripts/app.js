@@ -8,6 +8,8 @@ class DOMHelper {
     const element = document.getElementById(elementId);
     const destinationElement = document.querySelector(newDestinationSelector);
     destinationElement.append(element);
+    // NOTE: scrollIntoView() does what its name suggests! Some browsers also support some options we can pass into this as an object:
+    element.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
