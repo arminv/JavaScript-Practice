@@ -55,7 +55,12 @@ class Tooltip extends Component {
   create() {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
-    tooltipElement.textContent = this.text;
+    // NOTE: we can now use the <template> in our HTML:
+    const tooltipTemplate = document.getElementById('tooltip');
+    // NOTE: we can now create a new node based on our HTML <template> - 'true' specifies deep import here :
+    const tooltipBody = document.importNode(tooltipElement.content, true);
+    tooltipBody.querySelector('p').textContent = this.text;
+    tooltipElement.append(tooltipBody);
 
     const hostElPosLeft = this.hostElementId.offsetLeft;
     const hostElPosTop = this.hostElementId.offsetTop;
