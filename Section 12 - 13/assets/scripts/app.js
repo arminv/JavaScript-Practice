@@ -175,6 +175,20 @@ class App {
     finishedProjectsList.setSwitchHandlerFunction(
       activeProjectsList.addProject.bind(activeProjectsList)
     );
+
+    this.startAnalytics;
+
+    // const someScript = document.createElement('script');
+    // someScript.textContent = 'alert("HI THERE!");';
+    // document.head.append(someScript);
+  }
+
+  static startAnalytics() {
+    const analyticsScript = document.createElement('script');
+    // NOTE: we can set the src attribute of the script element. The path has to be as it is in HTML, so NOT relative to JS file!
+    analyticsScript.src = 'assets/scripts/analytics.js';
+    analyticsScript.defer = true;
+    document.head.append(analyticsScript);
   }
 }
 
