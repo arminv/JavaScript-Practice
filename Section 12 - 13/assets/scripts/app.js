@@ -176,7 +176,9 @@ class App {
       activeProjectsList.addProject.bind(activeProjectsList)
     );
 
-    this.startAnalytics;
+    document
+      .getElementById('start-analytics-btn')
+      .addEventListener('click', this.startAnalytics);
 
     // const someScript = document.createElement('script');
     // someScript.textContent = 'alert("HI THERE!");';
