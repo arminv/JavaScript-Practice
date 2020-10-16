@@ -230,3 +230,10 @@ App.init();
 // NOTE: a better way is this (i.e. to deal with scrollbars):
 // document.documentElement.clientWidth
 // document.documentElement.clientHeight
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: JS can access the current URL in parts:
+// window.location.protocol = `https:`
+// window.location.host = `google.com`
+// window.location.pathname = `/search/index.html`
+// window.location.search = `?s=article`
