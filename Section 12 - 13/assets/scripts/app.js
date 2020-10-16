@@ -237,3 +237,7 @@ App.init();
 // window.location.host = `google.com`
 // window.location.pathname = `/search/index.html`
 // window.location.search = `?s=article`
+// window.location.origin = `https://google.com`
+// NOTE: we can even navigate to another page using location - difference is with replace we will not have access to history and hence back button won't work:
+// location.replace('')
+// location.href = 'https://newWebsiteToVisit.com
