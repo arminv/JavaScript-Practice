@@ -241,3 +241,10 @@ App.init();
 // NOTE: we can even navigate to another page using location - difference is with replace we will not have access to history and hence back button won't work:
 // location.replace('')
 // location.href = 'https://newWebsiteToVisit.com
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: we also have access to the history Object:
+// history.back()
+// history.forward()
+// history.length   // to see how many 'steps' exist currently
+// history.go(5)   // takes us back 5 'steps'
