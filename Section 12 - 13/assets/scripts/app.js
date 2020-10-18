@@ -248,3 +248,11 @@ App.init();
 // history.forward()
 // history.length   // to see how many 'steps' exist currently
 // history.go(5)   // takes us back 5 'steps'
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: navigator gives us more metadata:
+// navigator
+// navigator.userAgent // this gives all the browser names for historical reasons (in the past some features were available to certain browsers only, etc.)
+// SEE THIS: https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
+// navigator.clipboard  // to interact with the clipboard
+// navigator.geolocation.getCurrentPosition((data) => console.log(data))  // to get user's geolocation
