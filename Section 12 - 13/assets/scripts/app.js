@@ -267,3 +267,12 @@ App.init();
 // const date2 = new Date('07/11/19');
 // NOTE: we can subtract dates from each other:
 // cosole.log(date - date2);
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: working with errors:
+// NOTE: you can throw anything (Objects, arrays, etc.) with 'throw', but it's better to use the dedicated constructor function Error() as it will also show a stacktrace in error message:
+// throw new Error('Something went wrong! :(');
+// NOTE: we can also create our own errors and set any properties to it:
+// const customError = new Error('Something went wrong! :(');
+// customError.myCustomProperty = 404;
+// console.dir(customError);
