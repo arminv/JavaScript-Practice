@@ -256,3 +256,14 @@ App.init();
 // SEE THIS: https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
 // navigator.clipboard  // to interact with the clipboard
 // navigator.geolocation.getCurrentPosition((data) => console.log(data))  // to get user's geolocation
+// ---------------------------------------------------------
+// ---------------------------------------------------------
+// NOTE: Dates():
+// const date = new Date()
+// date.getDate()
+// date.getDay()
+// date.getTime() // since the beginning of time in JS -> ms passed since Jan 1st 1970 !
+// NOTE: we can also pass in dates as arguments into Date() to parse them:
+// const date2 = new Date('07/11/19');
+// NOTE: we can subtract dates from each other:
+// cosole.log(date - date2);
