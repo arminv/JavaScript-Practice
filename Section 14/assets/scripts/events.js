@@ -35,6 +35,15 @@ window.addEventListener('scroll', (event) => {
   console.log(event);
 });
 
+const form = document.querySelector('form');
+
+// NOTE: submit event is unique to from elements only:
+form.addEventListener('submit', (event) => {
+  // NOTE: each HTML element has unique default behaviour - e.g. links will take user to the URL, etc.
+  event.preventDefault();
+  console.log(event);
+});
+
 // ------------------------------------------------------
 // ------------------------------------------------------
 // INFINITE SCROLLING:
