@@ -1,4 +1,4 @@
-const buttons = document.querySelectorAll('button');
+const button = document.querySelector('button');
 
 // NOTE: we could also have this inline and inside the HTML file (as an attribtue, 'onclick' on the <button >), but it's not the recommended way hence we use onclick here:
 const buttonClickHandler = (event) => {
@@ -41,6 +41,30 @@ const form = document.querySelector('form');
 form.addEventListener('submit', (event) => {
   // NOTE: each HTML element has unique default behaviour - e.g. links will take user to the URL, etc.
   event.preventDefault();
+  console.log(event);
+});
+
+const div = document.querySelector('div');
+
+// NOTE: browser handle events in 2 steps: 1) Capturing: it goes from the outside (element) to the inside 2) Bubbling: it goes from inside (element) to outside
+// NOTE: all event listeners captured via addEventListener() go through bubbling only (by default) - we can change this behaviour though:
+// NOTE: we can pass a third argument to addEventListener() - if 'true', the event will be captured during the Capturing phase (as opposed to Bubbling stage):
+div.addEventListener(
+  'click',
+  (event) => {
+    console.log('CLICKED DIV');
+    console.log(event);
+  }
+  // ,true
+);
+
+button.addEventListener('click', (event) => {
+  // NOTE: to stop propagation we can use stopPropagation():
+  event.stopPropagation();
+  // NOTE: if we have multiple events registered on an element, we can instead use stopImmediatePropagation():
+  // NOTE: in general (for other events such as mouseenter, drag and drop, etc.) we can check the 'bubbles' property (boolean) of the 'event' object to see if it propagates by default.
+  event.stopImmediatePropagation();
+  console.log('CLICKED BUTTON');
   console.log(event);
 });
 
