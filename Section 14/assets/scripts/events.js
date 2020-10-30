@@ -68,6 +68,28 @@ button.addEventListener('click', (event) => {
   console.log(event);
 });
 
+const listItems = document.querySelectorAll('li');
+const list = document.querySelector('ul');
+
+// NOTE: the below aproach is not optimal in terms of performance:
+// listItems.forEach((listItem) => {
+//   listItem.addEventListener('click', (event) => {
+//     event.target.classList.toggle('highlight');
+//   });
+// });
+
+// NOTE: this aproach is better (aka 'event delegation pattern') - we take advantage of event propagation and add the evnt listener only to ul element:
+// however this aproach can get problematic if HTML structure is more complex
+list.addEventListener('click', (event) => {
+  // NOTE: one advantage of event.target is that it refers to the exact element that triggered the event in the first place:
+  // event.target.classList.toggle('highlight');
+  // NOTE: we also have access to another 'target' that could be helpful in cases where the HTML is complex and we have event delegation:
+  // NOTE: currentTarget gives the element that we attached the event listener to, not the exacnt element that was clicked (unlike event.target);
+  // console.log(event.currentTarget);
+  // NOTE: we can use DOM traversal to fix the issue:
+  event.target.closest('li').classList.toggle('highlight');
+});
+
 // ------------------------------------------------------
 // ------------------------------------------------------
 // INFINITE SCROLLING:
@@ -75,20 +97,20 @@ button.addEventListener('click', (event) => {
 // Let's have fun with the scroll event and create a list which you can scroll infinitely (explanations below)!
 // You can run this code snippet on any page - just make sure that you can scroll vertically (either by adding enough dummy content, by adding some styles that add a lot of height to some elements or by shrinking the browser window vertically).
 
-let curElementNumber = 0;
+// let curElementNumber = 0;
 
-function scrollHandler() {
-  const distanceToBottom = document.body.getBoundingClientRect().bottom;
+// function scrollHandler() {
+//   const distanceToBottom = document.body.getBoundingClientRect().bottom;
 
-  if (distanceToBottom < document.documentElement.clientHeight + 150) {
-    const newDataElement = document.createElement('div');
-    curElementNumber++;
-    newDataElement.innerHTML = `<p>Element ${curElementNumber}</p>`;
-    document.body.append(newDataElement);
-  }
-}
+//   if (distanceToBottom < document.documentElement.clientHeight + 150) {
+//     const newDataElement = document.createElement('div');
+//     curElementNumber++;
+//     newDataElement.innerHTML = `<p>Element ${curElementNumber}</p>`;
+//     document.body.append(newDataElement);
+//   }
+// }
 
-window.addEventListener('scroll', scrollHandler);
+// window.addEventListener('scroll', scrollHandler);
 
 // At the very bottom, we register the scrollHandler function as a handler for the 'scroll' event on our window object.
 
