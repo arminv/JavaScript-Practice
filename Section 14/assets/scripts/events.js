@@ -58,7 +58,9 @@ div.addEventListener(
   // ,true
 );
 
-button.addEventListener('click', (event) => {
+// NOTE: with a normal function, 'this' refers to the current target (i.e. the element you originally attached listener too, NOT what was clicked!):
+// button.addEventListener('click', (event) => {
+button.addEventListener('click', function (event) {
   // NOTE: to stop propagation we can use stopPropagation():
   event.stopPropagation();
   // NOTE: if we have multiple events registered on an element, we can instead use stopImmediatePropagation():
@@ -66,6 +68,7 @@ button.addEventListener('click', (event) => {
   event.stopImmediatePropagation();
   console.log('CLICKED BUTTON');
   console.log(event);
+  console.log(this);
 });
 
 const listItems = document.querySelectorAll('li');
@@ -80,7 +83,8 @@ const list = document.querySelector('ul');
 
 // NOTE: this aproach is better (aka 'event delegation pattern') - we take advantage of event propagation and add the evnt listener only to ul element:
 // however this aproach can get problematic if HTML structure is more complex
-list.addEventListener('click', (event) => {
+// list.addEventListener('click', (event) => {
+list.addEventListener('click', function (event) {
   // NOTE: one advantage of event.target is that it refers to the exact element that triggered the event in the first place:
   // event.target.classList.toggle('highlight');
   // NOTE: we also have access to another 'target' that could be helpful in cases where the HTML is complex and we have event delegation:
@@ -90,8 +94,9 @@ list.addEventListener('click', (event) => {
   event.target.closest('li').classList.toggle('highlight');
   // NOTE: we can 'simulate' events through certain methods provided by JS (such as click() and submit()):
   // NOTE: this 'simulation' is not exactly the same as the user's behaviour - e.g. the other event listener does NOT get triggered when using this simulatuon (vs getting triggered if it was an actual user!)
-  // form.click();
-  form.submit();
+  form.click();
+  // form.submit();
+  console.log(this);
 });
 
 // ------------------------------------------------------
