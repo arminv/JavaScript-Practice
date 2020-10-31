@@ -88,6 +88,10 @@ list.addEventListener('click', (event) => {
   // console.log(event.currentTarget);
   // NOTE: we can use DOM traversal to fix the issue:
   event.target.closest('li').classList.toggle('highlight');
+  // NOTE: we can 'simulate' events through certain methods provided by JS (such as click() and submit()):
+  // NOTE: this 'simulation' is not exactly the same as the user's behaviour - e.g. the other event listener does NOT get triggered when using this simulatuon (vs getting triggered if it was an actual user!)
+  // form.click();
+  form.submit();
 });
 
 // ------------------------------------------------------
