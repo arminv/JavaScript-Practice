@@ -132,3 +132,4 @@ list.addEventListener('click', function (event) {
 // If we have less than 150px to the end of our page content, we make it into the if-block (where we append new data).
 
 // Inside of the if-statement, we then create a new <div> element and populate it with a <p> element which in turn outputs an incrementing counter value.
+// ------------------------------------------------------
