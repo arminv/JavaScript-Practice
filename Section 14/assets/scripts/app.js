@@ -84,6 +84,7 @@ class ProjectItem {
     this.updateProjectListsHandler = updateProjectListsFunction;
     this.connectMoreInfoButton();
     this.connectSwitchButton(type);
+    this.connectDrag();
   }
 
   showMoreInfoHandler() {
@@ -101,6 +102,17 @@ class ProjectItem {
     );
     tooltip.attach();
     this.hasActiveTooltip = true;
+  }
+
+  // NOTE: to make the list items draggable:
+  connectDrag() {
+    document.getElementById(this.id).addEventListener('dragstart', (event) => {
+      // NOTE: check MDN for more details on 'dataTransfer' and setData() - we can attach text, links, HTML/XML content, etc.:
+      // NOTE: this.id here is only a string so we can use the 'text/plain' type for it:
+      event.dataTransfer.setData('text/plain', this.id);
+      // NOTE: we can also set what kind of drag/drop we want to allow:
+      event.dataTransfer.effectAllowed = 'move';
+    });
   }
 
   connectMoreInfoButton() {
@@ -155,8 +167,8 @@ class ProjectList {
   switchProject(projectId) {
     // const projectIndex = this.projects.findIndex(p => p.id === projectId);
     // this.projects.splice(projectIndex, 1);
-    this.switchHandler(this.projects.find(p => p.id === projectId));
-    this.projects = this.projects.filter(p => p.id !== projectId);
+    this.switchHandler(this.projects.find((p) => p.id === projectId));
+    this.projects = this.projects.filter((p) => p.id !== projectId);
   }
 }
 
@@ -171,11 +183,11 @@ class App {
       activeProjectsList.addProject.bind(activeProjectsList)
     );
 
-    const timerId = setTimeout(this.startAnalytics, 3000);
+    // const timerId = setTimeout(this.startAnalytics, 3000);
 
-    document.getElementById('stop-analytics-btn').addEventListener('click', () => {
-      clearTimeout(timerId);
-    });
+    // document.getElementById('stop-analytics-btn').addEventListener('click', () => {
+    //   clearTimeout(timerId);
+    // });
   }
 
   static startAnalytics() {
