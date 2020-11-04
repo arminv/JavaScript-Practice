@@ -152,6 +152,27 @@ class ProjectList {
       );
     }
     console.log(this.projects);
+    this.connectDroppable();
+  }
+
+  // NOTE: to create a 'drop' area for our draggable elements:
+  connectDroppable() {
+    const list = document.querySelectorAll(`#${type}-projects ul`);
+
+    list.addEventListener('dragenter', (event) => {
+      // NOTE: sometimes we may wanna check the type before allowing for a 'drop' - we CANNOT read the data itself, only its type!:
+      if (event.dataTransfer.types[0] === 'text/plain') {
+        // NOTE: by calling preventDefault() here we trigger the event, otherwise it will not be triggered!
+        event.preventDefault();
+      }
+    });
+
+    list.addEventListener('dragover', (event) => {
+      if (event.dataTransfer.types[0] === 'text/plain') {
+        // NOTE: by calling preventDefault() here we trigger the event, otherwise it will not be triggered!
+        event.preventDefault();
+      }
+    });
   }
 
   setSwitchHandlerFunction(switchHandlerFunction) {
