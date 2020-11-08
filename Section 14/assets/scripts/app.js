@@ -157,11 +157,12 @@ class ProjectList {
 
   // NOTE: to create a 'drop' area for our draggable elements:
   connectDroppable() {
-    const list = document.querySelectorAll(`#${type}-projects ul`);
+    const list = document.querySelector(`#${this.type}-projects ul`);
 
     list.addEventListener('dragenter', (event) => {
       // NOTE: sometimes we may wanna check the type before allowing for a 'drop' - we CANNOT read the data itself, only its type!:
       if (event.dataTransfer.types[0] === 'text/plain') {
+        list.parentElement.classList.add('droppable');
         // NOTE: by calling preventDefault() here we trigger the event, otherwise it will not be triggered!
         event.preventDefault();
       }
@@ -171,6 +172,13 @@ class ProjectList {
       if (event.dataTransfer.types[0] === 'text/plain') {
         // NOTE: by calling preventDefault() here we trigger the event, otherwise it will not be triggered!
         event.preventDefault();
+      }
+    });
+
+    list.addEventListener('dragleave', (event) => {
+      // NOTE: relatedTarget refers to the actual element we are mobing 'INTO':
+      if (event.relatedTarget.closest(`#${this.type}-projects ul`) !== list) {
+        list.parentElement.classList.remove('droppable');
       }
     });
   }
