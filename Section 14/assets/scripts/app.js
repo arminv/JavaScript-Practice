@@ -106,12 +106,18 @@ class ProjectItem {
 
   // NOTE: to make the list items draggable:
   connectDrag() {
-    document.getElementById(this.id).addEventListener('dragstart', (event) => {
+    const item = document.getElementById(this.id);
+    item.addEventListener('dragstart', (event) => {
       // NOTE: check MDN for more details on 'dataTransfer' and setData() - we can attach text, links, HTML/XML content, etc.:
       // NOTE: this.id here is only a string so we can use the 'text/plain' type for it:
       event.dataTransfer.setData('text/plain', this.id);
       // NOTE: we can also set what kind of drag/drop we want to allow:
       event.dataTransfer.effectAllowed = 'move';
+    });
+
+    item.addEventListener('dragend', (event) => {
+      // NOTE: 'dataTransfer.dropEffect' in the event object indicates whether the drop operation was successful ('move') or not ('nonen'):
+      console.log(event);
     });
   }
 
@@ -180,6 +186,19 @@ class ProjectList {
       if (event.relatedTarget.closest(`#${this.type}-projects ul`) !== list) {
         list.parentElement.classList.remove('droppable');
       }
+    });
+
+    list.addEventListener('drop', (event) => {
+      const prjId = event.dataTransfer.getData('text/plain');
+      if (this.projects.find((p) => p.id === prjId)) {
+        return;
+      }
+      document
+        .getElementById(prjId)
+        .querySelector('button:last-of-type')
+        .click();
+      list.parentElement.classList.remove('droppable');
+      // event.preventDefault(); // not required here
     });
   }
 
