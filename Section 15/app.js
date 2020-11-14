@@ -37,10 +37,16 @@ printHobbies(hobbies);
 // NOTE: In general we prefer pure functions over normal ones as they are more predictable.
 // ---------------------------------------------------------------------
 // ---------------------------------------------------------------------
-// Factory Functions:
+// Factory Functions & closures:
+// NOTE: every function in JS is a closure because it 'closes over' all the variables in its environment and stores their value!
+// NOTE: the inner function gets created only when we call the outer function.
+
+let multiplier = 1.1;
+
 function createTaxCalculator(tax) {
   function calculateTax(amount) {
-    return amount * tax;
+    console.log(multiplier);
+    return amount * tax * multiplier;
   }
 
   return calculateTax;
@@ -52,6 +58,9 @@ function createTaxCalculator(tax) {
 // NOTE: by using factory functions, we can instead use - this way we don't have to pass in tax rate as and arg, we only need to pass amount:
 const calculateVatAmount = createTaxCalculator(0.19);
 const calculateIncomeTaxAmount = createTaxCalculator(0.25);
+
+// NOTE: unlike 'tax' variable that gets locked in, this new/updated variable will be used inside the calculateTax() function - i.e. it is NOT 'locked in' as it was defined in the global scope:
+multiplier = 1.2;
 
 console.log(calculateVatAmount(100));
 console.log(calculateIncomeTaxAmount(100));
