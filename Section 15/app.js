@@ -64,3 +64,18 @@ multiplier = 1.2;
 
 console.log(calculateVatAmount(100));
 console.log(calculateIncomeTaxAmount(100));
+
+let userName = 'Armin';
+
+function greetUser() {
+  // let name = userName;
+  // NOTE: when it comes to 'shadowing', the (inner) function scope has priority over the global one:
+  let name = 'Anna';
+  console.log('Hi' + name);
+}
+
+let name = 'Max';
+
+userName = 'AV';
+
+greetUser();
