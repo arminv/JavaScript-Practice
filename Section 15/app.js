@@ -75,7 +75,12 @@ function greetUser() {
 }
 
 let name = 'Max';
-
 userName = 'AV';
-
 greetUser();
+
+// NOTE: in theory, closures can be inefficient in terms of memory (as each function has access to all the global variables, etc.)
+// However, in practice JS engines are smart and optimized, so that if a function doesn't use a variable, they get rid of that to save memory!
+
+// NOTE: In JavaScript - especially in older scripts - you sometimes find a pattern described as "IIFEs". IIFE stands for "Immediately Invoked Function Expression"
+// Nowadays, this is not really required anymore. With let and const we got block scope and if you want to restrict where variables are available (outside of functions, if statements, for loops etc - where you automatically have scoped variables since these structures create blocks),
+// you can simply wrap the code that should have scoped variables with {}.
