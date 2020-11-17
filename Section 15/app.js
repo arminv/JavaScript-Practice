@@ -84,3 +84,33 @@ greetUser();
 // NOTE: In JavaScript - especially in older scripts - you sometimes find a pattern described as "IIFEs". IIFE stands for "Immediately Invoked Function Expression"
 // Nowadays, this is not really required anymore. With let and const we got block scope and if you want to restrict where variables are available (outside of functions, if statements, for loops etc - where you automatically have scoped variables since these structures create blocks),
 // you can simply wrap the code that should have scoped variables with {}.
+// ---------------------------------------------------------------------
+// ---------------------------------------------------------------------
+// Recursion:
+
+// function powerOf(x, n) {
+//   let result = 1;
+
+//   for (let i = 0; i < n; i++) {
+//     result *= x;
+//   }
+
+//   return result;
+// }
+
+// console.log(powerOf(2, 3));
+
+// The recursive version of above is:
+
+function powerOf(x, n) {
+  // if (n === 1) {
+  //   return x;
+  // }
+
+  // return x * powerOf(x, n - 1);
+
+  // The shortest way to implement this function would be:
+  return n === 1 ? x : x * powerOf(x, n - 1);
+}
+
+console.log(powerOf(2, 3));
