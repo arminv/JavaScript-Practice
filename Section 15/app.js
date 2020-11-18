@@ -114,3 +114,49 @@ function powerOf(x, n) {
 }
 
 console.log(powerOf(2, 3));
+
+// --------------------
+
+const myself = {
+  name: 'Armin',
+  friends: [
+    {
+      name: 'Max',
+      friends: [
+        {
+          name: 'Nolan',
+          friends: [
+            {
+              name: 'Harry',
+            },
+            {
+              name: 'Sherry',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'Julia',
+    },
+  ],
+};
+
+function getFriendNames(person) {
+  const collectedNames = [];
+
+  // NOTE: we ALWAYS need a stop condition for recursive methods:
+  if (!person.friends) {
+    return [];
+  }
+
+  for (const friend of person.name) {
+    collectedNames.push(friend.name);
+    // NOTE: we use recursion (e.g. we may not know how many friends each person has so we need a recursive solution):
+    collectedNames.push(...getFriendNames(friend));
+  }
+
+  return collectedNames;
+}
+
+console.log(getFriendNames(myself));
