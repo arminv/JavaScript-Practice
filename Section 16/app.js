@@ -53,3 +53,30 @@ function randomIntBetween(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 console.log(randomIntBetween(1, 10));
+// -------------------------------------------
+
+// Strings:
+
+// Tagged Templates are functions that work together with string literals:
+function productDescription(strings, productName, productPrice) {
+  console.log(strings); // returns the simple string part (without the dynamic parts) as an array
+  console.log(productName); // returns the first dynamic value (name)
+  console.log(productPrice); // returns the second dynamic value (price)
+
+  let priceCategory = 'pretty cheap';
+  if (productPrice > 20) {
+    priceCategory = 'fairly priced';
+  }
+  // NOTE: Tagged templates are helpful for conveniently creating some dynamic output (based on a string input)
+  return `${strings[0]}${productName}${strings[1]}${priceCategory}${strings[2]}}`;
+
+  // NOTE: we can even return objects from the string instead:
+  //   return { name: productName, price: productPrice };
+}
+
+const prodName = 'JavaScript Course';
+const prodPrice = 29.99;
+
+// NOTE: by passing a string literal after a function, we can call it and pass arguments to it:
+const prodcutOutput = productDescription`This product (${prodName}) is ${prodPrice}.`;
+console.log(prodcutOutput);
