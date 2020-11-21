@@ -36,3 +36,14 @@ console.log(5n / 2n);
 // NOTE: we can convert BigInt to normal numbers and vice versa like this:
 console.log(parseInt(10n) - 4);
 console.log(10n - BigInt(4));
+
+// NOTE: There are some special types of number in JS:
+console.log(Number.POSITIVE_INFINITY);
+console.log(Infinity);
+console.log(-Infinity);
+console.log(1 / 0); // Infinity
+
+// NOTE: we can check if a number is finite or not:
+console.log(Number.isFinite(10));
+console.log(Number.isFinite(Infinity));
+
