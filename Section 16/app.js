@@ -54,7 +54,6 @@ function randomIntBetween(min, max) {
 }
 console.log(randomIntBetween(1, 10));
 // -------------------------------------------
-
 // Strings:
 
 // Tagged Templates are functions that work together with string literals:
@@ -82,11 +81,26 @@ const prodcutOutput = productDescription`This product (${prodName}) is ${prodPri
 console.log(prodcutOutput);
 
 // -------------------------------------------
-
 // Regular Expressions (RegEx):
 
 // NOTE: in general there are two ways to do regex:
-const regex = new RegExp('');
+const regex1 = new RegExp('');
 // or:
-const regex = /^\S+@\S+\.\S+$/;
-regex.test('test@test.com'); // true
+const regex2 = /^\S+@\S+\.\S+$/;
+console.log(regex2.test('test@test.com')); // true
+
+// NOTE: this returns true as long as we have the word 'hello' exactly like this in our strings (case sensitive):
+const regex3 = /hello/;
+// If we want to allow for both 'hello' and 'Hello', we can do this:
+const regex4 = /(h|H)ello/;
+
+// NOTE: there are other modifiers such as wildcards:
+const regex5 = /.ello/; // dot means we don't care about the starting character
+
+// NOTE: we can also escape characters with a backward slash \
+
+// NOTE: regex.exec('someString) returns an array with more info:
+console.log(regex5.exec('jello'));
+console.log(regex5.exec('Hi! jello'));
+// NOTE: we can also do it the other way round (call match on the string instead):
+'hi jello'.match(regex5);
