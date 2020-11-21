@@ -47,3 +47,9 @@ console.log(1 / 0); // Infinity
 console.log(Number.isFinite(10));
 console.log(Number.isFinite(Infinity));
 
+// NOTE: we can create a random number generator (between a min/max):
+function randomIntBetween(min, max) {
+  // NOTE: Math.random() generates a pseudorandom value between 0 and 1, but in reality 1 is never returned!
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+console.log(randomIntBetween(1, 10));
