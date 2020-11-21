@@ -24,3 +24,15 @@ console.log((1 / 5).toString(2));
 // we can do this 'trick' - multiply by 100 to ensure we work with 'integers' (not 100% true as all numbers are floating in JS)
 // alternatively, use 3rd party libraries to help.
 console.log(20.2 * 100);
+
+// NOTE: BigInt is a primitive type that allows us to represent numbers that are bigger than MAX_SAFE_INTEGER:
+// we can create a BigInt by adding an 'n' at the end of our numbers:
+console.log(90071992547409919n);
+console.log(-90071992547409919n);
+console.log(90071992547409919989284939374987348729882n);
+// NOTE: there are NO DECIMALS when working with BigInt type! As a result, some fractions will lose their decimals:
+console.log(5n / 2n);
+// NOTE: we CANNOT MIX BigInt with other number types!
+// NOTE: we can convert BigInt to normal numbers and vice versa like this:
+console.log(parseInt(10n) - 4);
+console.log(10n - BigInt(4));
