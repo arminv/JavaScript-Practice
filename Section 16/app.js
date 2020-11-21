@@ -80,3 +80,13 @@ const prodPrice = 29.99;
 // NOTE: by passing a string literal after a function, we can call it and pass arguments to it:
 const prodcutOutput = productDescription`This product (${prodName}) is ${prodPrice}.`;
 console.log(prodcutOutput);
+
+// -------------------------------------------
+
+// Regular Expressions (RegEx):
+
+// NOTE: in general there are two ways to do regex:
+const regex = new RegExp('');
+// or:
+const regex = /^\S+@\S+\.\S+$/;
+regex.test('test@test.com'); // true
