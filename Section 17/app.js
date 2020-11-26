@@ -1,3 +1,5 @@
+// NOTE: JS is single-threaded, but it offloads longer-taking tasks to the browser (which uses multiple threads).
+
 const button = document.querySelector('button');
 const output = document.querySelector('p');
 
@@ -5,12 +7,20 @@ function trackUserHandler() {
   console.log('Clicked!');
   navigator.geolocation.getCurrentPosition(
     (posData) => {
-      console.log(posData);
+      // NOTE: we CAN nest async operations inside each other:
+      setTimeout(() => {
+        console.log(posData);
+      }, 2000);
     },
     (error) => {
       console.log(error);
     }
   );
+  // NOTE: this line always executes AFTER the line ('Getting positions...') because it's async and gets passed to the browser, which takes it through event loop and message queue:
+  // NOTE: the lag time in setTimeout() is a minimum, it's not a guaranteed time however (e.g. if we have a large for loop that blocks the call stack, etc.).
+  setTimeout(() => {
+    console.log('Timer Done!');
+  }, 0);
   // NOTE: no matter what, this line always gets printed before the other two logs (because of event loop and message queue):
   console.log('Getting position...');
 }
