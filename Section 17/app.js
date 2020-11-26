@@ -3,6 +3,16 @@ const output = document.querySelector('p');
 
 function trackUserHandler() {
   console.log('Clicked!');
+  navigator.geolocation.getCurrentPosition(
+    (posData) => {
+      console.log(posData);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+  // NOTE: no matter what, this line always gets printed before the other two logs (because of event loop and message queue):
+  console.log('Getting position...');
 }
 
 // NOTE: this is an async task:
