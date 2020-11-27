@@ -3,6 +3,18 @@
 const button = document.querySelector('button');
 const output = document.querySelector('p');
 
+const getPosition = (opts) => {
+  const promise = new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (success) => {
+        resolve(success);
+      },
+      (error) => {},
+      opts
+    );
+  });
+};
+
 const setTimer = (duration) => {
   // NOTE: the function inside Promise() will be executed when the promise is created:
   const promise = new Promise((resolve, reject) => {
@@ -17,20 +29,32 @@ const setTimer = (duration) => {
 };
 
 function trackUserHandler() {
+  let positionData;
   console.log('Clicked!');
-  navigator.geolocation.getCurrentPosition(
-    (posData) => {
-      // NOTE: the function inside then() executes whenever the promise is resolved:
-      setTimer(2000).then((data) => console.log(data, posData));
-      // NOTE: we CAN nest async operations inside each other:
-      // setTimeout(() => {
-      //   console.log(posData);
-      // }, 2000);
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  // NOTE: the promise-based version is better...:
+  getPosition()
+    .then((posData) => {
+      positionData = posData;
+      // NOTE: we can 'chain' promises like this (note the second then()):
+      // NOTE: we do NOT have to return a promise based function, it can be anything (e.g. a string - which will be resolved immediately!):
+      return setTimer(2000);
+    })
+    .then((data) => console.log(data));
+  // NOTE: as opposed to the callback version here:
+  // navigator.geolocation.getCurrentPosition(
+  //   (posData) => {
+  //     // NOTE: the function inside then() executes whenever the promise is resolved:
+  //     setTimer(2000).then((data) => console.log(data, posData));
+  //     // NOTE: we CAN nest async operations inside each other:
+  //     // setTimeout(() => {
+  //     //   console.log(posData);
+  //     // }, 2000);
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  // );
+
   // NOTE: this line always executes AFTER the line ('Getting positions...') because it's async and gets passed to the browser, which takes it through event loop and message queue:
   // NOTE: the lag time in setTimeout() is a minimum, it's not a guaranteed time however (e.g. if we have a large for loop that blocks the call stack, etc.).
   // setTimeout(() => {
