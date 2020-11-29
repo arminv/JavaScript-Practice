@@ -1,4 +1,5 @@
 // NOTE: JS is single-threaded, but it offloads longer-taking tasks to the browser (which uses multiple threads).
+// NOTE: a promise can be either: 1) Resolved 2) Pending 3) Rejected
 
 const button = document.querySelector('button');
 const output = document.querySelector('p');
@@ -9,7 +10,10 @@ const getPosition = (opts) => {
       (success) => {
         resolve(success);
       },
-      (error) => {},
+      (error) => {
+        // NOTE: reject() will mark the promise as failed:
+        reject(error);
+      },
       opts
     );
   });
@@ -33,13 +37,27 @@ function trackUserHandler() {
   console.log('Clicked!');
   // NOTE: the promise-based version is better...:
   getPosition()
-    .then((posData) => {
-      positionData = posData;
-      // NOTE: we can 'chain' promises like this (note the second then()):
-      // NOTE: we do NOT have to return a promise based function, it can be anything (e.g. a string - which will be resolved immediately!):
-      return setTimer(2000);
-    })
-    .then((data) => console.log(data));
+    .then(
+      (posData) => {
+        positionData = posData;
+        // NOTE: we can 'chain' promises like this (note the second then()):
+        // NOTE: we do NOT have to return a promise based function, it can be anything (e.g. a string - which will be resolved immediately!):
+        return setTimer(2000);
+      },
+      // NOTE: then() accepts a second argument for handling errors:
+      (err) => {
+        console.log(err);
+      }
+    )
+    .then((data) => console.log(data, positionData))
+    // NOTE: alternatively, we can use catch() for error handling (instead of passing a second argument to then()):
+    // NOTE: catch() will show ANY error that happens in the chain as long as they are BEFORE catch() (i.e. not only for one of the then() calls)
+    // NOTE: therefore we can put it at the end of the chain to catch any errors in any of the then() calls!
+    .catch((err) => {
+      console.log(err);
+      return 'Error happened here...!';
+    });
+
   // NOTE: as opposed to the callback version here:
   // navigator.geolocation.getCurrentPosition(
   //   (posData) => {
