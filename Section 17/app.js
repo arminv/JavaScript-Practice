@@ -1,5 +1,8 @@
 // NOTE: JS is single-threaded, but it offloads longer-taking tasks to the browser (which uses multiple threads).
-// NOTE: a promise can be either: 1) Resolved 2) Pending 3) Rejected
+// NOTE: a promise can be either:
+// 1) Resolved : Promise is resolved => then() executes
+// 2) Pending : Promise is doing work, neither then() nor catch() executes at this moment
+// 3) Rejected : Promise was rejected => catch() executes
 
 const button = document.querySelector('button');
 const output = document.querySelector('p');
@@ -53,6 +56,9 @@ function trackUserHandler() {
     // NOTE: alternatively, we can use catch() for error handling (instead of passing a second argument to then()):
     // NOTE: catch() will show ANY error that happens in the chain as long as they are BEFORE catch() (i.e. not only for one of the then() calls)
     // NOTE: therefore we can put it at the end of the chain to catch any errors in any of the then() calls!
+    // NOTE: When you have another then() block after a catch() or then() block, the promise re-enters PENDING mode (keep in mind: then() and catch() always return a new promise
+    // - either not resolving to anything or resolving to what you return inside of then()).Only if there are no more then() blocks left, it enters a new, final mode: SETTLED.
+    // Once SETTLED, you can use a special block - finally() - to do final cleanup work. finally() is reached no matter if you resolved or rejected before.
     .catch((err) => {
       console.log(err);
       return 'Error happened here...!';
