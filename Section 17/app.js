@@ -5,6 +5,10 @@
 // 2) Pending : Promise is doing work, neither then() nor catch() executes at this moment
 // 3) Rejected : Promise was rejected => catch() executes
 
+// NOTE: additional learning resources:
+// - https://web.dev/promises/
+// - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+
 const button = document.querySelector('button');
 const output = document.querySelector('p');
 
@@ -112,6 +116,24 @@ async function trackUserHandler() {
 
 // NOTE: this is an async task:
 button.addEventListener('click', trackUserHandler);
+
+// NOTE: Promise.race() takes an array of functions that return promises, and returns a promise with the result of the fastest promise in the array:
+// NOTE: the slow promises are not cancelled, only their result is ignored (e.g. with HTTP requests, they are sent, but results are ignored!).
+Promise.race([getPosition(), setTimer(1000)]).then((data) => {
+  console.log(data);
+});
+
+// NOTE: Promise.all() is used to execute code only when all the functions in the array have finished execution - it returns an array with the
+// result of each of the promises in the initial array:
+Promise.all([getPosition(), setTimer(1000)]).then((promiseData) => {
+  console.log(promiseData);
+});
+
+// NOTE: Promise.allSettled() also takes in an array of promises and returns an Object with the result of all the promises in the array.
+// the difference here is that if any of the promises fail (i.e. is rejected), we do NOT stop execution of the others (as opposed to Promise.all()).
+Promise.allSettled([getPosition(), setTimer(1000)]).then((promiseData) => {
+  console.log(promiseData);
+});
 
 // NOTE: we see 'Clicked!' only after the below has been executed (because of the way browser handles the Event Loop)
 let result = 0;
