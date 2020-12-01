@@ -40,9 +40,16 @@ const setTimer = (duration) => {
 // NOTE: async/await can ONLY be used with functions
 async function trackUserHandler() {
   // let positionData;
+  // NOTE: with async/await, we can use the normal (synchronous) error handling:
+  let posData;
+  let timerData;
+  try {
+    posData = await getPosition();
+    timerData = await setTimer(2000);
+  } catch (error) {
+    console.log(error);
+  }
   console.log('Clicked!');
-  const posData = await getPosition();
-  const timerData = await setTimer(2000);
   console.log(timerData, posData);
 
   // NOTE: the promise-based version is better than callback approach...:
