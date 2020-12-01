@@ -37,7 +37,7 @@ const setTimer = (duration) => {
 };
 
 // NOTE: async/await uses promises under the hood - it wraps everything in one big promise - it doesn NOT change the way JS executes:
-// NOTE: async/await can ONLY be used with functions
+// NOTE: async/await can ONLY be used INSIDE functions - one way around this is to use IIFEs.
 async function trackUserHandler() {
   // let positionData;
   // NOTE: with async/await, we can use the normal (synchronous) error handling:
@@ -49,6 +49,8 @@ async function trackUserHandler() {
   } catch (error) {
     console.log(error);
   }
+  // NOTE: compared to the promise/.then() approach, these consoles execute only after
+  // the try/catch block (whereas with promises the would have got executed right away, i.e. before the async parts!):
   console.log('Clicked!');
   console.log(timerData, posData);
 
