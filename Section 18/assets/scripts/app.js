@@ -7,22 +7,38 @@
 const listElement = document.querySelector('.posts');
 const postTemplate = document.getElementById('single-post');
 
-// NOTE: XMLHttpRequest() is supported by al browsers:
-const xhr = new XMLHttpRequest();
+function sendHttpRequest(method, url) {
+  const promise = new Promise((resolve, reject) => {
+    // NOTE: XMLHttpRequest() is supported by al browsers:
+    const xhr = new XMLHttpRequest();
 
-// NOTE: open() does NOT send any requests - it requires 2 arguments:
-// 1) the HTTP request type; 2) the endpoint/URL
-xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+    // NOTE: open() does NOT send any requests - it requires 2 arguments:
+    // 1) the HTTP request type; 2) the endpoint/URL
+    xhr.open(method, url);
 
-// NOTE: instead of using JSON.parse(), we can do the following so that the response gets converted into a JS Object:
-xhr.responseType = 'json';
+    // NOTE: instead of using JSON.parse(), we can do the following so that the response gets converted into a JS Object:
+    xhr.responseType = 'json';
 
-// NOTE: some browsers do NOT support xhr.addEventListener() - better to assign a function to xhr:
-xhr.onload = function () {
+    // NOTE: some browsers do NOT support xhr.addEventListener() - better to assign a function to xhr:
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+
+    xhr.send();
+  });
+
+  return promise;
+}
+
+async function fetchPosts() {
+  const responseData = await sendHttpRequest(
+    'GET',
+    'https://jsonplaceholder.typicode.com/posts'
+  );
   // NOTE: we can use JSON.parse() to convert the json into JS Object so we can manipulate it easily:
   //   const listOfPosts = JSON.parse(xhr.response);
   // NOTE: if using xhr.responseType, then we do not need to convert the JSON (it will already be converted):
-  const listOfPosts = xhr.response;
+  const listOfPosts = responseData;
   console.log(listOfPosts);
   for (const post of listOfPosts) {
     const postEl = document.importNode(postTemplate.contentEditable, true);
@@ -30,6 +46,6 @@ xhr.onload = function () {
     postEl.querySelector('p').textContent = post.body;
     listElement.append(postEl);
   }
-};
+}
 
-xhr.send();
+fetchPosts();
