@@ -24,7 +24,17 @@ function sendHttpRequest(method, url, data) {
 
     // NOTE: some browsers do NOT support xhr.addEventListener() - better to assign a function to xhr:
     xhr.onload = function () {
-      resolve(xhr.response);
+      // NOTE: to make sure we also catch ant server side errors, we need to add or own condition based on HTTP response codes:
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response);
+      } else {
+        reject(new Error('Something went wrong!'));
+      }
+    };
+
+    // NOTE: this error handler does not check for server side errors, it only kicks in if anything client side happens:
+    xhr.onerror = function () {
+      reject(new Error('Failed to send request!'));
     };
 
     xhr.send(JSON.stringify(data));
@@ -34,21 +44,25 @@ function sendHttpRequest(method, url, data) {
 }
 
 async function fetchPosts() {
-  const responseData = await sendHttpRequest(
-    'GET',
-    'https://jsonplaceholder.typicode.com/posts'
-  );
-  // NOTE: we can use JSON.parse() to convert the json into JS Object so we can manipulate it easily:
-  //   const listOfPosts = JSON.parse(xhr.response);
-  // NOTE: if using xhr.responseType, then we do not need to convert the JSON (it will already be converted):
-  const listOfPosts = responseData;
-  console.log(listOfPosts);
-  for (const post of listOfPosts) {
-    const postEl = document.importNode(postTemplate.contentEditable, true);
-    postEl.querySelector('h2').textContent = post.title.toUpperCase();
-    postEl.querySelector('p').textContent = post.body;
-    postEl.querySelector('li').id = post.id;
-    listElement.append(postEl);
+  try {
+    const responseData = await sendHttpRequest(
+      'GET',
+      'https://jsonplaceholder.typicode.com/posts'
+    );
+    // NOTE: we can use JSON.parse() to convert the json into JS Object so we can manipulate it easily:
+    //   const listOfPosts = JSON.parse(xhr.response);
+    // NOTE: if using xhr.responseType, then we do not need to convert the JSON (it will already be converted):
+    const listOfPosts = responseData;
+    console.log(listOfPosts);
+    for (const post of listOfPosts) {
+      const postEl = document.importNode(postTemplate.contentEditable, true);
+      postEl.querySelector('h2').textContent = post.title.toUpperCase();
+      postEl.querySelector('p').textContent = post.body;
+      postEl.querySelector('li').id = post.id;
+      listElement.append(postEl);
+    }
+  } catch (error) {
+    alert(error.message);
   }
 }
 
