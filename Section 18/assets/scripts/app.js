@@ -11,36 +11,41 @@ const fetchButton = document.querySelector('#available-posts button');
 const postList = document.querySelector('ul');
 
 function sendHttpRequest(method, url, data) {
-  const promise = new Promise((resolve, reject) => {
-    // NOTE: XMLHttpRequest() is supported by al browsers:
-    const xhr = new XMLHttpRequest();
+  // A) XMLHttpRequest Approach:
 
-    // NOTE: open() does NOT send any requests - it requires 2 arguments:
-    // 1) the HTTP request type; 2) the endpoint/URL
-    xhr.open(method, url);
+  // const promise = new Promise((resolve, reject) => {
+  //   // NOTE: XMLHttpRequest() is supported by al browsers:
+  //   const xhr = new XMLHttpRequest();
+  //   // NOTE: open() does NOT send any requests - it requires 2 arguments:
+  //   // 1) the HTTP request type; 2) the endpoint/URL
+  //   xhr.open(method, url);
+  //   // NOTE: instead of using JSON.parse(), we can do the following so that the response gets converted into a JS Object:
+  //   xhr.responseType = 'json';
+  //   // NOTE: some browsers do NOT support xhr.addEventListener() - better to assign a function to xhr:
+  //   xhr.onload = function () {
+  //     // NOTE: to make sure we also catch ant server side errors, we need to add or own condition based on HTTP response codes:
+  //     if (xhr.status >= 200 && xhr.status < 300) {
+  //       resolve(xhr.response);
+  //     } else {
+  //       reject(new Error('Something went wrong!'));
+  //     }
+  //   };
+  //   // NOTE: this error handler does not check for server side errors, it only kicks in if anything client side happens:
+  //   xhr.onerror = function () {
+  //     reject(new Error('Failed to send request!'));
+  //   };
+  //   xhr.send(JSON.stringify(data));
+  // });
 
-    // NOTE: instead of using JSON.parse(), we can do the following so that the response gets converted into a JS Object:
-    xhr.responseType = 'json';
+  // return promise;
 
-    // NOTE: some browsers do NOT support xhr.addEventListener() - better to assign a function to xhr:
-    xhr.onload = function () {
-      // NOTE: to make sure we also catch ant server side errors, we need to add or own condition based on HTTP response codes:
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(xhr.response);
-      } else {
-        reject(new Error('Something went wrong!'));
-      }
-    };
-
-    // NOTE: this error handler does not check for server side errors, it only kicks in if anything client side happens:
-    xhr.onerror = function () {
-      reject(new Error('Failed to send request!'));
-    };
-
-    xhr.send(JSON.stringify(data));
+  // B) Fetch API Approach:
+  // NOTE: if we only pass the URL with no other arguments, a GET request will be sent:
+  return fetch(url).then((response) => {
+    // NOTE: fetch returns data in 'streamed' format (unlike XML approach where we get back a 'parsed' data) hence we need to call json() on the result to 'snapshot' the data and parse it:
+    // NOTE: there are other methods available as well, such as: response.text(), response.blob(), etc.
+    return response.json();
   });
-
-  return promise;
 }
 
 async function fetchPosts() {
