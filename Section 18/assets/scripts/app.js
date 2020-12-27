@@ -41,7 +41,10 @@ function sendHttpRequest(method, url, data) {
 
   // B) Fetch API Approach:
   // NOTE: if we only pass the URL with no other arguments, a GET request will be sent:
-  return fetch(url).then((response) => {
+  return fetch(url, {
+    method: method,
+    body: JSON.stringify(data),
+  }).then((response) => {
     // NOTE: fetch returns data in 'streamed' format (unlike XML approach where we get back a 'parsed' data) hence we need to call json() on the result to 'snapshot' the data and parse it:
     // NOTE: there are other methods available as well, such as: response.text(), response.blob(), etc.
     return response.json();
