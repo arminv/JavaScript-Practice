@@ -16,6 +16,8 @@ function sendHttpRequest(method, url, data) {
   // const promise = new Promise((resolve, reject) => {
   //   // NOTE: XMLHttpRequest() is supported by al browsers:
   //   const xhr = new XMLHttpRequest();
+  //  // NOTE: We can add headers, but once a header has been added, it cannot be removed:
+  // XPathResult.setRequestHeader('Content-Type', 'application/json');
   //   // NOTE: open() does NOT send any requests - it requires 2 arguments:
   //   // 1) the HTTP request type; 2) the endpoint/URL
   //   xhr.open(method, url);
@@ -44,6 +46,10 @@ function sendHttpRequest(method, url, data) {
   return fetch(url, {
     method: method,
     body: JSON.stringify(data),
+    // NOTE: we can also add headers to help the server identify the type of information we are sending to it (only useful if server actually expects headers):
+    headers: {
+      'Content-Type': 'application/json',
+    },
   }).then((response) => {
     // NOTE: fetch returns data in 'streamed' format (unlike XML approach where we get back a 'parsed' data) hence we need to call json() on the result to 'snapshot' the data and parse it:
     // NOTE: there are other methods available as well, such as: response.text(), response.blob(), etc.
