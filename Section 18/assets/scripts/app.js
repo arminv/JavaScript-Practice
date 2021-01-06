@@ -43,18 +43,35 @@ function sendHttpRequest(method, url, data) {
 
   // B) Fetch API Approach:
   // NOTE: if we only pass the URL with no other arguments, a GET request will be sent:
-  return fetch(url, {
-    method: method,
-    body: JSON.stringify(data),
-    // NOTE: we can also add headers to help the server identify the type of information we are sending to it (only useful if server actually expects headers):
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((response) => {
-    // NOTE: fetch returns data in 'streamed' format (unlike XML approach where we get back a 'parsed' data) hence we need to call json() on the result to 'snapshot' the data and parse it:
-    // NOTE: there are other methods available as well, such as: response.text(), response.blob(), etc.
-    return response.json();
-  });
+  return (
+    fetch(url, {
+      method: method,
+      body: JSON.stringify(data),
+      // NOTE: we can also add headers to help the server identify the type of information we are sending to it (only useful if server actually expects headers):
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          // NOTE: fetch returns data in 'streamed' format (unlike XML approach where we get back a 'parsed' data) hence we need to call json() on the result to 'snapshot' the data and parse it:
+          // NOTE: there are other methods available as well, such as: response.text(), response.blob(), etc.
+          return response.json();
+        } else {
+          // NOTE: `response.json()` returns a promise that we can use for showing the actual error from server - downside is a nested `then` block:
+          // NOTE: we have to return so the response is chained with the outer promise, otherwise we will NOT have access to `errData` here:
+          return response.json().then((errData) => {
+            console.log(errData);
+            throw new Error('Something went wrong - server side!');
+          });
+        }
+      })
+      // NOTE: the problem with this catch block is that we will never make it into this block when there is a server error! So we handle it above instead!
+      .catch((error) => {
+        console.log();
+        throw new Error('Something went wrong!');
+      })
+  );
 }
 
 async function fetchPosts() {
