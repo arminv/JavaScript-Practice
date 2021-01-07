@@ -46,11 +46,13 @@ function sendHttpRequest(method, url, data) {
   return (
     fetch(url, {
       method: method,
-      body: JSON.stringify(data),
+      // body: JSON.stringify(data),
+      // NOTE: in the case of `FormData`, fetch API correctly recognizes the format (i.e. no need to make a JSON):
+      body: data,
       // NOTE: we can also add headers to help the server identify the type of information we are sending to it (only useful if server actually expects headers):
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // },
     })
       .then((response) => {
         if (xhr.status >= 200 && xhr.status < 300) {
@@ -105,7 +107,18 @@ async function createPost(title, content) {
     userId: userId,
   };
 
-  sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', post);
+  // NOTE: `FormData` is part of standard JS and supported by browsers - we can pass key/value pairs to it:
+  // NOTE: the format of the data it returns is NOT JSON! (i.e. this approach won't be useful if our API only accepts JSON)
+  // NOTE: if we pass the form element as an argument, JS will try to automatically collect all the form fields for us - we need to make sure our HTML <input> have a `name` attribute!
+  const fd = new FormData(form);
+  // fd.append('title', title);
+  // fd.append('body', content);
+  fd.append('userId', userId);
+  // NOTE: we can even use `FormData` to send files:
+  // fd.append('someFile', someFileObject, 'photo.png');
+
+  // sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', post);
+  sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', fd);
 }
 
 fetchButton.addEventListener('click', fetchPosts);
