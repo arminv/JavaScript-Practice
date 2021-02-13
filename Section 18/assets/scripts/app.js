@@ -78,14 +78,17 @@ function sendHttpRequest(method, url, data) {
 
 async function fetchPosts() {
   try {
-    const responseData = await sendHttpRequest(
-      'GET',
+    // NOTE: we can also use Axios instead (using a CDN):
+    // const responseData = await sendHttpRequest(
+    const response = await axios.get(
+      // 'GET',
       'https://jsonplaceholder.typicode.com/posts'
     );
     // NOTE: we can use JSON.parse() to convert the json into JS Object so we can manipulate it easily:
     //   const listOfPosts = JSON.parse(xhr.response);
     // NOTE: if using xhr.responseType, then we do not need to convert the JSON (it will already be converted):
-    const listOfPosts = responseData;
+    // const listOfPosts = responseData;
+    const listOfPosts = response.data;
     console.log(listOfPosts);
     for (const post of listOfPosts) {
       const postEl = document.importNode(postTemplate.contentEditable, true);
@@ -96,6 +99,7 @@ async function fetchPosts() {
     }
   } catch (error) {
     alert(error.message);
+    console.log(error.response);
   }
 }
 
@@ -118,7 +122,13 @@ async function createPost(title, content) {
   // fd.append('someFile', someFileObject, 'photo.png');
 
   // sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', post);
-  sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', fd);
+  // sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', fd);
+  // NOTE: we can also use Axios instead - Axios also takes care of headers for us - it also stringifies arrays/objects into JSON for us automatically:
+  const response = await axios.post(
+    'https://jsonplaceholder.typicode.com/posts',
+    fd
+  );
+  console.log(response);
 }
 
 fetchButton.addEventListener('click', fetchPosts);
@@ -133,9 +143,11 @@ form.addEventListener('submit', (event) => {
 postList.addEventListener('click', (event) => {
   if (event.target.tagName === 'BUTTON') {
     const postId = event.target.closest('li').id;
-    sendHttpRequest(
-      'DELETE',
-      `https://jsonplaceholder.typicode.com/posts/${postId}`
-    );
+    // sendHttpRequest(
+    //   'DELETE',
+    //   `https://jsonplaceholder.typicode.com/posts/${postId}`
+    // );
+    // NOTE: we can also use Axios instead:
+    axios.delete(`https://jsonplaceholder.typicode.com/posts/${postId}`);
   }
 });
