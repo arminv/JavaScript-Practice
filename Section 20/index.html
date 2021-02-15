@@ -6,6 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Project Board</title>
     <link rel="stylesheet" href="assets/styles/app.css" />
+    <!-- NOTE: the ORDER of imports here MATTERS! Make sure we import the ones that are needed by other files/components first: -->
+    <script src="assets/scripts/Utility/DOMHelper.js" defer></script>
+    <script src="assets/scripts/App/Component.js" defer></script>
+    <script src="assets/scripts/App/Tooltip.js" defer></script>
+    <script src="assets/scripts/App/ProjectItem.js" defer></script>
+    <script src="assets/scripts/App/ProjectList.js" defer></script>
     <script src="assets/scripts/app.js" defer></script>
   </head>
   <body>
