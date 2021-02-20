@@ -17,15 +17,18 @@ export class ProjectItem {
     }
     const projectElement = document.getElementById(this.id);
     const tooltipText = projectElement.dataset.extraInfo;
-    const tooltip = new Tooltip(
-      () => {
-        this.hasActiveTooltip = false;
-      },
-      tooltipText,
-      this.id
-    );
-    tooltip.attach();
-    this.hasActiveTooltip = true;
+    // NOTE: we can also use Dynamic Imports in JS like this - we only import Tooltip when we need it:
+    import('./Tooltip.js').then((module) => {
+      const tooltip = new module.Tooltip(
+        () => {
+          this.hasActiveTooltip = false;
+        },
+        tooltipText,
+        this.id
+      );
+      tooltip.attach();
+      this.hasActiveTooltip = true;
+    });
   }
 
   connectDrag() {
