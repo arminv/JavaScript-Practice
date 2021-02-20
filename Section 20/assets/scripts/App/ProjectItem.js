@@ -1,5 +1,5 @@
 import { DOMHelper } from '../Utility/DOMHelper.js';
-import { Tooltip } from './Tooltip.js';
+// import { Tooltip } from './Tooltip.js';
 export class ProjectItem {
   hasActiveTooltip = false;
 
@@ -18,6 +18,7 @@ export class ProjectItem {
     const projectElement = document.getElementById(this.id);
     const tooltipText = projectElement.dataset.extraInfo;
     // NOTE: we can also use Dynamic Imports in JS like this - we only import Tooltip when we need it:
+    // NOTE: code inside `modules` runs only once, even if we import that `module` more than once and in different places!
     import('./Tooltip.js').then((module) => {
       const tooltip = new module.Tooltip(
         () => {

@@ -1,4 +1,7 @@
 import Cmp, { doSomething } from './Component.js';
+
+// NOTE: code inside `modules` runs only once, even if we import that `module` more than once and in different places!
+console.log('Tooltip executing!');
 export class Tooltip extends Cmp {
   constructor(closeNotifierFunction, text, hostElementId) {
     super(hostElementId);

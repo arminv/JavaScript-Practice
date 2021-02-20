@@ -1,3 +1,6 @@
+// NOTE: code inside `modules` runs only once, even if we import that `module` more than once and in different places!
+console.log('DOMHelper executing!');
+
 export class DOMHelper {
   static clearEventListeners(element) {
     const clonedElement = element.cloneNode(true);
